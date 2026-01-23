@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="pearl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beranda | Titik Fiksi</title>
+  
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <script async id="ga-script"></script>
+  <script id="ga-setup"></script>
+
+  <link rel="stylesheet" href="assets/css/themes.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+
+<body>
+  <div class="navbar-wrap">
+    <div class="container">
+      <nav class="navbar glass-panel">
+        <a class="brand" href="index.html">
+          <div class="brand-logo">
+            <img data-brand="logo" src="assets/images/logo/favicon.png" alt="Logo">
+          </div>
+          <div class="brand-title">
+            <strong>Titik Fiksi</strong>
+            <span>Official Website</span>
+          </div>
+        </a>
+
+        <div class="nav-links">
+          <a class="active" href="index.html">Beranda</a>
+          <a href="works.html">Novel</a>
+          <a href="writings.html">Tulisan</a>
+          <a href="contact.html">Kontak</a>
+        </div>
+
+        <div class="nav-actions">
+          <button id="theme-toggle" class="theme-btn" type="button">
+            <span class="theme-dot"></span>
+            <span id="theme-label">Pearl Sky</span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <main class="section hero">
+    <div class="container">
+      <div class="glass-card hero-inner">
+        <div>
+          <h1 id="hero-title">Memuat...</h1>
+          <div id="hero-subtitle" class="hero-subtitle">...</div>
+          <p id="hero-intro">...</p>
+          
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="works.html">📚 Baca Novel</a>
+            <a class="btn btn-soft" href="contact.html">📩 Kontak</a>
+          </div>
+
+          <div id="hero-youtube-wrapper" class="video-promo-container" style="display:none;">
+             <div class="video-col">
+                <div id="hero-youtube"></div>
+             </div>
+             <div class="desc-col">
+                <div id="hero-video-title" class="promo-title"></div>
+                <p id="hero-video-desc" class="promo-desc"></p>
+                <a id="hero-video-link" href="#" target="_blank" class="promo-btn" style="display:none;"></a>
+             </div>
+          </div>
+          
+          <div style="margin-top: 25px; padding-top: 15px; border-top: 1px dashed var(--border);">
+             <small style="color:var(--muted); font-weight:bold; display:block; margin-bottom:8px; text-transform: uppercase;">BACA KARYA SAYA DI:</small>
+             <div id="novel-links-container" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+          </div>
+        </div>
+
+        <div class="hero-side">
+          <div class="glass-panel mini-card" style="background: rgba(255,255,255,0.1); border-left: 4px solid var(--brand);">
+            <div class="mini-card-title" style="color:var(--brand); text-transform:uppercase; letter-spacing:1px; font-size:11px;">📢 Info Terbaru</div>
+            <div id="home-featured-container" class="mini-card-desc">
+              <p>Memuat info...</p>
+            </div>
+          </div>
+          
+          <div class="glass-panel mini-card">
+            <div class="mini-card-title">🛍️ Store & Rekomendasi</div>
+            <div id="ads-store-container" style="margin-top:10px;">
+              <p style="font-size:12px; color:var(--muted);">Memuat store...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner glass-panel">
+        <div>© <span id="yearNow"></span> Titik Fiksi</div>
+        <div style="display:flex; gap:10px;">
+          <a href="works.html">Novel</a>
+          <a href="writings.html">Tulisan</a>
+          <a href="contact.html">Kontak</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    document.getElementById("yearNow").textContent = new Date().getFullYear();
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+  </script>
+</body>
+</html>
