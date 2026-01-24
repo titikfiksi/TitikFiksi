@@ -164,4 +164,5 @@ collections:
               - { label: "Kategori", name: "category", widget: "string", required: false }
               - { label: "Tampilkan di Beranda?", name: "featured", widget: "boolean", default: false }
               - { label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD", required: false }
+
               - { label: "Isi Tulisan", name: "content", widget: "markdown", required: false }

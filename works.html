@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Novel | Titik Fiksi</title>
-
+  <title>Koleksi Novel | Titik Fiksi</title>
   <link rel="stylesheet" href="assets/css/themes.css" />
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
@@ -14,15 +13,9 @@
     <div class="container">
       <nav class="navbar glass-panel">
         <a class="brand" href="index.html">
-          <div class="brand-logo">
-            <img data-brand="logo" src="assets/images/logo/favicon.png" alt="Logo">
-          </div>
-          <div class="brand-title">
-            <strong>Titik Fiksi</strong>
-            <span>Novel & Karya</span>
-          </div>
+          <div class="brand-icon">T</div>
+          <span>Titik Fiksi.</span>
         </a>
-
         <div class="nav-links">
           <a href="index.html">Beranda</a>
           <a class="active" href="works.html">Novel</a>
@@ -30,12 +23,8 @@
           <a href="about.html">Tentang</a>
           <a href="contact.html">Kontak</a>
         </div>
-
         <div class="nav-actions">
-          <button id="theme-toggle" class="theme-btn" type="button">
-            <span class="theme-dot"></span>
-            <span id="theme-label">Pearl Sky</span>
-          </button>
+           <button id="theme-toggle" class="theme-btn" type="button"><span class="theme-dot" style="width:12px; height:12px; background:var(--brand); border-radius:50%;"></span></button>
         </div>
       </nav>
     </div>
@@ -43,32 +32,20 @@
 
   <main class="section">
     <div class="container">
-      <div class="section-title">
-        <h2>📚 Novel</h2>
-        <p>Kumpulan karya dan proyek cerita Anda.</p>
+      <div class="text-center" style="margin-bottom: 40px;">
+        <h2>Koleksi Novel</h2>
+        <p style="color:var(--muted);">Menjelajahi dunia fantasi dan imajinasi tanpa batas.</p>
       </div>
 
-      <div id="works-container" class="grid-cards"></div>
+      <div id="works-container" class="grid-cards">
+        </div>
     </div>
   </main>
 
   <footer class="footer">
-    <div class="container">
-      <div class="footer-inner glass-panel">
-        <div>© <span id="yearNow"></span> Titik Fiksi</div>
-        <div style="display:flex; gap:10px;">
-          <a href="about.html">Tentang</a>
-          <a href="writings.html">Tulisan</a>
-          <a href="contact.html">Kontak</a>
-        </div>
-      </div>
-    </div>
+    <div class="container"><div class="footer-inner"><div>&copy; Titik Fiksi</div></div></div>
   </footer>
-
   <script src="assets/js/theme.js"></script>
   <script src="assets/js/main.js"></script>
-  <script>
-    document.getElementById("yearNow").textContent = new Date().getFullYear();
-  </script>
 </body>
 </html>
