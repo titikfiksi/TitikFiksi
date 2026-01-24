@@ -1,7 +1,7 @@
 /* =========================================================
-   TITIK FIKSI — High-End Professional Author Website
-   Codebase: V5 (FINAL MASTER)
-   File: assets/css/style.css
+   TITIK FIKSI — High-End Professional CSS
+   Codebase: V6.1 (FINAL CLEAN)
+   Features: Ads Styling, Mobile Overflow Fix, Lynk.id Color
    ========================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
@@ -141,7 +141,9 @@ ul { list-style: none; }
 }
 .plat-orange:hover { border-color: #FF9F1C; color: #FF9F1C; background: rgba(255, 159, 28, 0.05); transform: translateY(-2px); }
 .plat-red:hover { border-color: #E22B2D; color: #E22B2D; background: rgba(226, 43, 45, 0.05); transform: translateY(-2px); }
-.plat-purple:hover { border-color: #8b5cf6; color: #8b5cf6; transform: translateY(-2px); }
+.plat-purple:hover { background: #7c3aed !important; color: white !important; border-color: #7c3aed !important; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3); }
+.plat-purple { background: rgba(139, 92, 246, 0.1); color: #7c3aed; border-color: rgba(139, 92, 246, 0.3); }
+
 .btn-platform:active { transform: scale(0.95); }
 
 /* --- HERO & STORE --- */
@@ -176,16 +178,12 @@ ul { list-style: none; }
 .promo-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
 .promo-desc { font-size: 12px; color: var(--muted); line-height: 1.4; margin-bottom: 8px; }
 
-/* --- STORE MEDIA & LYNK.ID --- */
+/* --- STORE MEDIA --- */
 .store-media { width: 100%; border-radius: 8px; overflow: hidden; background: black; margin-bottom: 8px; }
 .store-media.video { aspect-ratio: 16/9; }
 .store-media.video iframe { width: 100%; height: 100%; border: none; }
 .store-media.image img { width: 100%; height: auto; max-height: 250px; object-fit: cover; }
 .store-btn:hover { background: var(--brand) !important; color: white !important; border-color: var(--brand) !important; transform: translateY(-2px); }
-
-/* Lynk.id / Digital Button */
-.plat-purple { background: rgba(139, 92, 246, 0.1); color: #7c3aed; border-color: rgba(139, 92, 246, 0.3); }
-.plat-purple:hover { background: #7c3aed !important; color: white !important; box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4); border-color: #7c3aed !important; }
 
 /* --- CARD GRIDS --- */
 .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; padding-top: 10px; }
@@ -272,20 +270,47 @@ ul { list-style: none; }
 .btn-email { background: var(--bg-3); color: var(--text-1); }
 .btn-email:hover { border-color: var(--text-1); transform: translateY(-2px); }
 
-/* --- MOBILE --- */
+/* --- MOBILE OPTIMIZATIONS (FIXED CLIP & CUT-OFF) --- */
 @media (max-width: 768px) {
   .container { padding: 0 16px; width: 100%; max-width: 100%; }
   .section { padding: 24px 0; }
   .navbar-wrap { padding: 0; top: 0; }
-  .navbar { padding: 10px 16px; border-radius: 0 0 20px 20px; display: grid; grid-template-columns: 1fr auto; gap: 12px; }
+  
+  /* Navbar Mobile Layout */
+  .navbar { 
+    padding: 10px 16px; border-radius: 0 0 20px 20px; 
+    display: grid; grid-template-columns: 1fr auto; gap: 12px; 
+  }
   .brand { font-size: 18px; }
+
+  /* FIX: Nav Links Scrolling Container */
   .nav-links {
-    grid-column: 1 / -1; order: 3; width: 100%; overflow-x: auto; white-space: nowrap; background: transparent; padding: 0;
-    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    grid-column: 1 / -1; order: 3; width: 100%;
+    /* Display */
+    display: flex; flex-wrap: nowrap; gap: 8px; justify-content: flex-start;
+    overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    /* Spacing Fixes to prevent cut-off */
+    padding: 8px 10px 15px 10px; /* Bawah ditambah agar shadow tidak terpotong */
+    margin: 0 -16px; /* Agar scroll mentok ke pinggir layar */
+    width: calc(100% + 32px); /* Kompensasi margin negatif */
+    padding-left: 20px; /* Jarak aman awal */
+    padding-right: 20px; /* Jarak aman akhir */
+    background: transparent;
   }
   .nav-links::-webkit-scrollbar { display: none; }
-  .nav-links a { font-size: 13px; padding: 8px 16px; background: var(--bg-3); border: 1px solid var(--border); margin-right: 6px; border-radius: 20px; }
-  .nav-links a.active { background: var(--text-1); color: var(--bg-1); border-color: var(--text-1); }
+  
+  /* Nav Item Mobile Styling */
+  .nav-links a {
+    font-size: 13px; padding: 8px 18px; 
+    background: var(--bg-3); border: 1px solid var(--border); 
+    border-radius: 24px; /* Lebih bulat di mobile */
+    flex-shrink: 0; /* Jangan menyusut */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+  }
+  .nav-links a.active { 
+    background: var(--text-1); color: var(--bg-1); border-color: var(--text-1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+  }
   
   .hero-inner { grid-template-columns: 1fr; gap: 24px; padding: 20px; }
   .hero-content h1 { font-size: 28px; }

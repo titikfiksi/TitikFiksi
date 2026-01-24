@@ -1,10 +1,10 @@
 /* =========================================================
-   TITIK FIKSI — Main Controller (FINAL FIXED V5.2)
-   Status: Clean Syntax, No Errors, Full Features
+   TITIK FIKSI — Main Controller (FINAL STABLE VERSION)
+   Status: Verified Clean, Zero Error, All Features Active
    ========================================================= */
 
 const TitikFiksi = (() => {
-  // 1. CONFIGURATION PATHS
+  // 1. KONFIGURASI PATH
   const PATHS = {
     settings: "/content/settings/settings_general.json",
     home: "/content/home/home.json",
@@ -13,7 +13,7 @@ const TitikFiksi = (() => {
     chaptersDir: "/content/chapters/"
   };
 
-  // 2. UTILITY FUNCTIONS
+  // 2. FUNGSI UTILITAS
   const Utils = {
     getQueryParam(param) {
       return new URLSearchParams(window.location.search).get(param);
@@ -34,9 +34,7 @@ const TitikFiksi = (() => {
       try {
         const timestamp = new Date().getTime();
         const url = `${path}?v=${timestamp}`;
-        const res = await fetch(url, {
-          cache: "no-store"
-        });
+        const res = await fetch(url, { cache: "no-store" });
         if (!res.ok) return null;
         return await res.json();
       } catch (e) {
@@ -60,7 +58,8 @@ const TitikFiksi = (() => {
     renderMarkdown(text) {
       if (!text) return "";
       try {
-        let clean = text.replace(/\\/g, '');
+        // Membersihkan backslash yang tidak perlu
+        let clean = text.replace(/\\/g, ''); 
         const paragraphs = clean.split(/\n\s*\n/);
         return paragraphs.map(para => {
           if (!para || para.trim().length === 0) return "";
@@ -81,9 +80,21 @@ const TitikFiksi = (() => {
     }
   };
 
-  /* --- 3. CORE FUNCTIONS --- */
+  /* --- 3. FUNGSI LOGIKA HELPER --- */
 
-  // Helper: Update Social Links
+  function getColorClass(colorName) {
+    if (!colorName) return "plat-blue";
+    const c = colorName.toLowerCase();
+    if (c.includes("orange")) return "plat-orange";
+    if (c.includes("merah")) return "plat-red";
+    if (c.includes("hijau")) return "plat-green";
+    if (c.includes("hitam")) return "plat-black";
+    if (c.includes("ungu") || c.includes("digital")) return "plat-purple";
+    if (c.includes("kuning")) return "plat-yellow";
+    if (c.includes("pink")) return "plat-pink";
+    return "plat-blue";
+  }
+
   function updateSocialLink(className, url) {
     const els = document.getElementsByClassName(className);
     if (!els) return;
@@ -99,7 +110,6 @@ const TitikFiksi = (() => {
     }
   }
 
-  // Helper: Render Business Contacts
   function renderBusinessContacts(s) {
     const container = document.getElementById("business-contacts");
     if (!container) return;
@@ -121,28 +131,25 @@ const TitikFiksi = (() => {
     }
   }
 
-  // Function: Init Global Settings
+  /* --- 4. INISIALISASI HALAMAN --- */
+
   async function initGlobalSettings() {
     const settings = await Utils.fetchJSON(PATHS.settings);
     const homeData = await Utils.fetchJSON(PATHS.home);
 
     if (settings) {
-      // Logo & Favicon
       if (settings.brand_logo) {
         document.querySelectorAll('img[data-brand="logo"]').forEach(img => img.src = settings.brand_logo);
       }
       if (settings.brand_favicon) {
         let link = document.querySelector("link[rel~='icon']") || document.createElement('link');
-        link.rel = 'icon';
-        link.href = settings.brand_favicon;
-        document.head.appendChild(link);
+        link.rel = 'icon'; link.href = settings.brand_favicon; document.head.appendChild(link);
       }
-      // Tab Title
       if (settings.site_title && (location.pathname === '/' || location.pathname.includes('index'))) {
         document.title = settings.site_title;
       }
 
-      // Google Analytics
+      // Google Analytics Injection
       if (settings.ga_id && settings.ga_id.startsWith("G-")) {
         const scriptLib = document.getElementById("ga-script");
         if (scriptLib) {
@@ -154,13 +161,13 @@ const TitikFiksi = (() => {
           document.head.appendChild(newScript);
         }
 
-        const scriptSetup = document.getElementById("ga-setup");
         const code = `
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', '${settings.ga_id}');
         `;
+        const scriptSetup = document.getElementById("ga-setup");
         if (scriptSetup) {
           scriptSetup.innerHTML = code;
         } else {
@@ -171,7 +178,6 @@ const TitikFiksi = (() => {
       }
     }
 
-    // Social Media
     if (homeData && homeData.socials) {
       const s = homeData.socials;
       updateSocialLink('social-ig', s.instagram);
@@ -183,7 +189,6 @@ const TitikFiksi = (() => {
     }
   }
 
-  // Function: Init Home Page
   async function initHomePage() {
     const data = await Utils.fetchJSON(PATHS.home);
     if (!data || !data.hero) return;
@@ -192,7 +197,7 @@ const TitikFiksi = (() => {
     Utils.setText("hero-subtitle", data.hero.subtitle);
     Utils.setText("hero-intro", data.hero.intro);
 
-    // Hero Video (Left)
+    // Hero Video (Kiri)
     const ytWrapper = document.getElementById("hero-youtube-wrapper");
     const ytContainer = document.getElementById("hero-youtube");
 
@@ -201,14 +206,13 @@ const TitikFiksi = (() => {
       ytContainer.innerHTML = `<iframe src="${url}" title="YouTube" frameborder="0" allowfullscreen></iframe>`;
       Utils.setText("hero-video-title", data.hero.video_title || "");
       Utils.setText("hero-video-desc", data.hero.video_desc || "");
-
+      
       const btn = document.getElementById("hero-video-link");
       if (btn) btn.style.display = "none";
-
       if (ytWrapper) ytWrapper.style.display = "grid";
     }
 
-    // Novel Platforms (Left Bottom)
+    // Novel Platforms
     const linksContainer = document.getElementById("novel-links-container");
     if (linksContainer) {
       let items = [];
@@ -216,9 +220,7 @@ const TitikFiksi = (() => {
         items = data.novel_links;
       } else if (data.platforms) {
         items = Object.entries(data.platforms).map(([key, val]) => ({
-          name: key,
-          url: val,
-          color: 'Ungu'
+          name: key, url: val, color: 'Ungu'
         }));
       }
 
@@ -234,12 +236,11 @@ const TitikFiksi = (() => {
       }
     }
 
-    // Ads Store (Right Sidebar)
+    // Ads Store (Kanan)
     const adsContainer = document.getElementById("ads-store-container");
     if (adsContainer) {
       if (data.ads_store && Array.isArray(data.ads_store) && data.ads_store.length > 0) {
         let htmlStore = "";
-
         data.ads_store.forEach(item => {
           let colorClass = getColorClass(item.color);
           let mediaContent = "";
@@ -270,21 +271,6 @@ const TitikFiksi = (() => {
     initFeaturedWritings();
   }
 
-  // Helper: Color Class Matcher
-  function getColorClass(colorName) {
-    if (!colorName) return "plat-blue";
-    const c = colorName.toLowerCase();
-    if (c.includes("orange")) return "plat-orange";
-    if (c.includes("merah")) return "plat-red";
-    if (c.includes("hijau")) return "plat-green";
-    if (c.includes("hitam")) return "plat-black";
-    if (c.includes("ungu") || c.includes("digital")) return "plat-purple";
-    if (c.includes("kuning")) return "plat-yellow";
-    if (c.includes("pink")) return "plat-pink";
-    return "plat-blue";
-  }
-
-  // Function: Featured Writings
   async function initFeaturedWritings() {
     const container = document.getElementById("home-featured-container");
     if (!container) return;
@@ -307,7 +293,6 @@ const TitikFiksi = (() => {
     `;
   }
 
-  // Function: Novel Detail
   async function initNovelDetail() {
     const slug = Utils.getQueryParam("slug");
     if (!slug) return;
@@ -364,7 +349,6 @@ const TitikFiksi = (() => {
     }
   }
 
-  // Function: Read Chapter
   async function initReadChapter() {
     window.scrollTo(0, 0);
     const novelSlug = Utils.getQueryParam("novel");
@@ -387,7 +371,7 @@ const TitikFiksi = (() => {
     const linkBox = document.getElementById("chapter-external-links");
     if (linkBox && data.external_links) {
       const l = data.external_links;
-      if ((l.karyakarsa && l.karyakarsa.length > 5) || (l.wattpad && l.wattpad.length > 5) || (l.goodnovel && l.goodnovel.length > 5)) {
+      if ((l.karyakarsa && l.karyakarsa.length > 5) || (l.wattpad && l.wattpad.length > 5) || (l.goodnovel && l.goodnovel.length > 5) || (l.custom_url && l.custom_url.length > 5)) {
         let btns = "";
         if (l.karyakarsa) btns += `<a href="${l.karyakarsa}" target="_blank" class="btn-cta cta-karyakarsa">🎁 Karyakarsa</a>`;
         if (l.wattpad) btns += `<a href="${l.wattpad}" target="_blank" class="btn-cta cta-wattpad">🟠 Wattpad</a>`;
@@ -432,7 +416,6 @@ const TitikFiksi = (() => {
     }
   }
 
-  // Function: Works List
   async function initWorksList() {
     const container = document.getElementById("works-container");
     if (!container) return;
@@ -463,7 +446,6 @@ const TitikFiksi = (() => {
     });
   }
 
-  // Function: Writings List
   async function initWritingsList() {
     const container = document.getElementById("writings-container");
     if (!container) return;
@@ -479,7 +461,7 @@ const TitikFiksi = (() => {
       const row = document.createElement("div");
       row.className = "glass-panel";
       row.style.cssText = "margin-bottom:15px; padding:22px; border-left:4px solid var(--brand);";
-
+      
       row.innerHTML = `
         <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
             <span style="font-size:0.8rem; color:var(--brand); font-weight:bold;">${item.category||'Artikel'}</span>
@@ -494,7 +476,6 @@ const TitikFiksi = (() => {
     });
   }
 
-  // 4. INITIALIZER
   function init() {
     initGlobalSettings();
     const path = window.location.pathname.toLowerCase();
@@ -508,11 +489,7 @@ const TitikFiksi = (() => {
     else if (path === "/" || path.includes("index")) initHomePage();
   }
 
-  return {
-    init,
-    Utils
-  };
+  return { init, Utils };
 })();
 
-// EXECUTE
 document.addEventListener("DOMContentLoaded", TitikFiksi.init);
