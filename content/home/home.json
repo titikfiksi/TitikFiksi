@@ -16,5 +16,21 @@
     "tiktok": "https://www.tiktok.com/@titikfiksi.official",
     "youtube": "https://youtube.com/@titikfiksi",
     "email": "titikfiksi@gmail.com"
-  }
+  },
+  "novel_links": [
+    {
+      "color": "Orange (Wattpad)",
+      "url": "https://www.wattpad.com/",
+      "name": "wattpad"
+    }
+  ],
+  "ads_store": [
+    {
+      "btn_text": "Cek Disini",
+      "color": "Kuning (Shopee/Promo)",
+      "url": "https://shopee.co.id/BANGO-KECAP-MANIS-700G-x6-i.14318452.26764862187?extraParams=%7B%22display_model_id%22%3A226912104364%7D",
+      "product_name": "BANGO KECAP MANIS 700G x6",
+      "description": "� Kecap Manis \n\n� 100% Kecap Cuma Bango \n\n� Terbuat dari 100% bahan alami yang berkualitas \n\n� Tanpa pengawet, tanpa pewarna sintetik, tanpa pemanis buatan, tanpa penguat rasa \n\n� Bumbu memasak yang mudah digunakan dan multifungsi \n\n� Dapat digunakan untuk berbagai sajian masakan "
+    }
+  ]
 }
