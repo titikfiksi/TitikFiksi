@@ -1,9 +1,10 @@
 /* =========================================================
-   TITIK FIKSI — Main Controller (FIXED SYNTAX V5.1)
-   Fitur: Ads Media Switcher, Lynk.id, Anti-Error Checks
+   TITIK FIKSI — Main Controller (FINAL FIXED V5.2)
+   Status: Clean Syntax, No Errors, Full Features
    ========================================================= */
 
 const TitikFiksi = (() => {
+  // 1. CONFIGURATION PATHS
   const PATHS = {
     settings: "/content/settings/settings_general.json",
     home: "/content/home/home.json",
@@ -12,6 +13,7 @@ const TitikFiksi = (() => {
     chaptersDir: "/content/chapters/"
   };
 
+  // 2. UTILITY FUNCTIONS
   const Utils = {
     getQueryParam(param) {
       return new URLSearchParams(window.location.search).get(param);
@@ -79,37 +81,9 @@ const TitikFiksi = (() => {
     }
   };
 
-  /* --- 1. GLOBAL SETTINGS & CONTACTS --- */
-  async function initGlobalSettings() {
-    const settings = await Utils.fetchJSON(PATHS.settings);
-    const homeData = await Utils.fetchJSON(PATHS.home);
+  /* --- 3. CORE FUNCTIONS --- */
 
-    if (settings) {
-      if (settings.brand_logo) {
-        document.querySelectorAll('img[data-brand="logo"]').forEach(img => img.src = settings.brand_logo);
-      }
-      if (settings.brand_favicon) {
-        let link = document.querySelector("link[rel~='icon']") || document.createElement('link');
-        link.rel = 'icon';
-        link.href = settings.brand_favicon;
-        document.head.appendChild(link);
-      }
-      if (settings.site_title && (location.pathname === '/' || location.pathname.includes('index'))) {
-        document.title = settings.site_title;
-      }
-    }
-
-    if (homeData && homeData.socials) {
-      const s = homeData.socials;
-      updateSocialLink('social-ig', s.instagram);
-      updateSocialLink('social-fb', s.facebook);
-      updateSocialLink('social-tw', s.twitter);
-      updateSocialLink('social-tt', s.tiktok);
-      updateSocialLink('social-yt', s.youtube);
-      renderBusinessContacts(s);
-    }
-  }
-
+  // Helper: Update Social Links
   function updateSocialLink(className, url) {
     const els = document.getElementsByClassName(className);
     if (!els) return;
@@ -125,6 +99,7 @@ const TitikFiksi = (() => {
     }
   }
 
+  // Helper: Render Business Contacts
   function renderBusinessContacts(s) {
     const container = document.getElementById("business-contacts");
     if (!container) return;
@@ -146,7 +121,69 @@ const TitikFiksi = (() => {
     }
   }
 
-  /* --- 2. BERANDA --- */
+  // Function: Init Global Settings
+  async function initGlobalSettings() {
+    const settings = await Utils.fetchJSON(PATHS.settings);
+    const homeData = await Utils.fetchJSON(PATHS.home);
+
+    if (settings) {
+      // Logo & Favicon
+      if (settings.brand_logo) {
+        document.querySelectorAll('img[data-brand="logo"]').forEach(img => img.src = settings.brand_logo);
+      }
+      if (settings.brand_favicon) {
+        let link = document.querySelector("link[rel~='icon']") || document.createElement('link');
+        link.rel = 'icon';
+        link.href = settings.brand_favicon;
+        document.head.appendChild(link);
+      }
+      // Tab Title
+      if (settings.site_title && (location.pathname === '/' || location.pathname.includes('index'))) {
+        document.title = settings.site_title;
+      }
+
+      // Google Analytics
+      if (settings.ga_id && settings.ga_id.startsWith("G-")) {
+        const scriptLib = document.getElementById("ga-script");
+        if (scriptLib) {
+          scriptLib.src = `https://www.googletagmanager.com/gtag/js?id=${settings.ga_id}`;
+        } else {
+          const newScript = document.createElement("script");
+          newScript.async = true;
+          newScript.src = `https://www.googletagmanager.com/gtag/js?id=${settings.ga_id}`;
+          document.head.appendChild(newScript);
+        }
+
+        const scriptSetup = document.getElementById("ga-setup");
+        const code = `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${settings.ga_id}');
+        `;
+        if (scriptSetup) {
+          scriptSetup.innerHTML = code;
+        } else {
+          const s = document.createElement("script");
+          s.innerHTML = code;
+          document.head.appendChild(s);
+        }
+      }
+    }
+
+    // Social Media
+    if (homeData && homeData.socials) {
+      const s = homeData.socials;
+      updateSocialLink('social-ig', s.instagram);
+      updateSocialLink('social-fb', s.facebook);
+      updateSocialLink('social-tw', s.twitter);
+      updateSocialLink('social-tt', s.tiktok);
+      updateSocialLink('social-yt', s.youtube);
+      renderBusinessContacts(s);
+    }
+  }
+
+  // Function: Init Home Page
   async function initHomePage() {
     const data = await Utils.fetchJSON(PATHS.home);
     if (!data || !data.hero) return;
@@ -155,7 +192,7 @@ const TitikFiksi = (() => {
     Utils.setText("hero-subtitle", data.hero.subtitle);
     Utils.setText("hero-intro", data.hero.intro);
 
-    // HERO VIDEO (LEFT)
+    // Hero Video (Left)
     const ytWrapper = document.getElementById("hero-youtube-wrapper");
     const ytContainer = document.getElementById("hero-youtube");
 
@@ -171,7 +208,7 @@ const TitikFiksi = (() => {
       if (ytWrapper) ytWrapper.style.display = "grid";
     }
 
-    // NOVEL PLATFORMS
+    // Novel Platforms (Left Bottom)
     const linksContainer = document.getElementById("novel-links-container");
     if (linksContainer) {
       let items = [];
@@ -197,7 +234,7 @@ const TitikFiksi = (() => {
       }
     }
 
-    // ADS STORE (RIGHT)
+    // Ads Store (Right Sidebar)
     const adsContainer = document.getElementById("ads-store-container");
     if (adsContainer) {
       if (data.ads_store && Array.isArray(data.ads_store) && data.ads_store.length > 0) {
@@ -233,6 +270,7 @@ const TitikFiksi = (() => {
     initFeaturedWritings();
   }
 
+  // Helper: Color Class Matcher
   function getColorClass(colorName) {
     if (!colorName) return "plat-blue";
     const c = colorName.toLowerCase();
@@ -241,15 +279,18 @@ const TitikFiksi = (() => {
     if (c.includes("hijau")) return "plat-green";
     if (c.includes("hitam")) return "plat-black";
     if (c.includes("ungu") || c.includes("digital")) return "plat-purple";
+    if (c.includes("kuning")) return "plat-yellow";
+    if (c.includes("pink")) return "plat-pink";
     return "plat-blue";
   }
 
+  // Function: Featured Writings
   async function initFeaturedWritings() {
     const container = document.getElementById("home-featured-container");
     if (!container) return;
     const data = await Utils.fetchJSON(PATHS.writings);
     if (!data || !data.writings) return;
-    
+
     const featured = data.writings.filter(w => w.featured === true);
     if (featured.length === 0) {
       container.innerHTML = `<p style="font-size:13px; color:var(--muted);">Belum ada info terbaru.</p>`;
@@ -266,12 +307,12 @@ const TitikFiksi = (() => {
     `;
   }
 
-  /* --- 3. DETAIL NOVEL --- */
+  // Function: Novel Detail
   async function initNovelDetail() {
     const slug = Utils.getQueryParam("slug");
     if (!slug) return;
     Utils.setText("work-title", "Memuat...");
-    
+
     const data = await Utils.fetchJSON(PATHS.works);
     const novel = data?.works?.find(w => w.slug === slug);
     if (!novel) {
@@ -285,16 +326,16 @@ const TitikFiksi = (() => {
 
     Utils.setText("work-genre", `${novel.genre}`);
     Utils.setText("work-status", `${novel.status}`);
-    
+
     const synopsisBox = document.getElementById("work-synopsis");
     if (synopsisBox) synopsisBox.innerHTML = Utils.renderMarkdown(novel.synopsis);
-    
+
     const imgEl = document.getElementById("work-cover-img");
     if (imgEl) imgEl.src = novel.cover || "assets/images/defaults/cover-default.jpg";
 
     const listContainer = document.getElementById("chapters-list");
     listContainer.innerHTML = '<div>Mencari bab...</div>';
-    
+
     let chapterCount = 1, foundChapters = [], gapCount = 0;
     while (chapterCount <= 300 && gapCount < 5) {
       const code = String(chapterCount).padStart(2, '0');
@@ -323,7 +364,7 @@ const TitikFiksi = (() => {
     }
   }
 
-  /* --- 4. READER MODE --- */
+  // Function: Read Chapter
   async function initReadChapter() {
     window.scrollTo(0, 0);
     const novelSlug = Utils.getQueryParam("novel");
@@ -339,7 +380,7 @@ const TitikFiksi = (() => {
     document.title = `${data.title}`;
     Utils.setText("chapter-top", `CHAPTER ${parseInt(chapCode)}`);
     Utils.setText("chapter-title", data.title);
-    
+
     const contentBox = document.getElementById("chapter-content");
     if (contentBox) contentBox.innerHTML = Utils.renderMarkdown(data.content);
 
@@ -391,24 +432,24 @@ const TitikFiksi = (() => {
     }
   }
 
-  /* --- 5. WORKS LIST --- */
+  // Function: Works List
   async function initWorksList() {
     const container = document.getElementById("works-container");
     if (!container) return;
-    
+
     const data = await Utils.fetchJSON(PATHS.works);
     if (!data || !data.works) {
       container.innerHTML = '<div class="glass-panel" style="padding:20px;">Belum ada novel.</div>';
       return;
     }
-    
+
     container.innerHTML = "";
     data.works.forEach(work => {
       const card = document.createElement("a");
       card.href = `novel.html?slug=${work.slug}`;
       card.className = "card-work glass-panel";
       const titleHTML = Utils.formatTitleHTML(work.title);
-      
+
       card.innerHTML = `
         <div class="card-cover">
             <img src="${work.cover||'assets/images/defaults/cover-default.jpg'}" loading="lazy">
@@ -422,23 +463,23 @@ const TitikFiksi = (() => {
     });
   }
 
+  // Function: Writings List
   async function initWritingsList() {
     const container = document.getElementById("writings-container");
     if (!container) return;
-    
+
     const data = await Utils.fetchJSON(PATHS.writings);
     if (!data || !data.writings) {
       container.innerHTML = '<div>Kosong.</div>';
       return;
     }
-    
+
     container.innerHTML = "";
     data.writings.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(item => {
       const row = document.createElement("div");
       row.className = "glass-panel";
       row.style.cssText = "margin-bottom:15px; padding:22px; border-left:4px solid var(--brand);";
-      
-      // FIXED SYNTAX HERE: Removed escaping on quotes inside template strings
+
       row.innerHTML = `
         <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
             <span style="font-size:0.8rem; color:var(--brand); font-weight:bold;">${item.category||'Artikel'}</span>
@@ -453,6 +494,7 @@ const TitikFiksi = (() => {
     });
   }
 
+  // 4. INITIALIZER
   function init() {
     initGlobalSettings();
     const path = window.location.pathname.toLowerCase();
@@ -465,10 +507,12 @@ const TitikFiksi = (() => {
     else if (path.includes("writings") || path.includes("tulisan")) initWritingsList();
     else if (path === "/" || path.includes("index")) initHomePage();
   }
+
   return {
     init,
     Utils
   };
 })();
 
+// EXECUTE
 document.addEventListener("DOMContentLoaded", TitikFiksi.init);
