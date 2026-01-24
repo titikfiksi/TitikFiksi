@@ -5,8 +5,8 @@ backend:
 media_folder: "assets/images/uploads"
 public_folder: "/assets/images/uploads"
 
-site_url: "https://titikfiksi.netlify.app"
-display_url: "https://titikfiksi.netlify.app"
+site_url: "https://titikfiksiuniverse.netlify.app"
+display_url: "https://titikfiksiuniverse.netlify.app"
 locale: "id"
 
 slug:
@@ -24,72 +24,72 @@ collections:
         file: "content/home/home.json"
         format: "json"
         fields:
-          # A. HERO / VIDEO UTAMA (IKLAN PREMIUM)
-          - label: "HERO SECTION & IKLAN UTAMA"
+          # A. HERO / VIDEO UTAMA
+          - label: "HERO SECTION (Kiri)"
             name: "hero"
             widget: "object"
             fields:
-              - { label: "Judul Besar (Atas)", name: "title", widget: "string" }
+              - { label: "Judul Besar", name: "title", widget: "string" }
               - { label: "Sub Judul", name: "subtitle", widget: "string", required: false }
               - { label: "Intro Text", name: "intro", widget: "text", required: false }
-              # PENGATURAN VIDEO SPLIT
-              - { label: "Youtube URL (Iklan Utama)", name: "youtube_embed", widget: "string", required: false }
-              - { label: "Judul Video/Iklan", name: "video_title", widget: "string", required: false, hint: "Judul kecil di samping video." }
-              - { label: "Deskripsi Video", name: "video_desc", widget: "text", required: false, hint: "Penjelasan singkat iklan/video." }
-              - { label: "Link Tautan Video (Opsional)", name: "video_link", widget: "string", required: false, hint: "Link tujuan jika ini video endorse/iklan." }
-              - { label: "Teks Tombol Video", name: "video_btn_text", widget: "string", default: "Selengkapnya", required: false }
-          
-          # B. LINK NOVEL (KIRI BAWAH)
-          - label: "🔹 LINK BACA NOVEL (Kiri Bawah)"
+              - { label: "Youtube URL (Trailer/Branding)", name: "youtube_embed", widget: "string", required: false, hint: "Link video utama website" }
+              - { label: "Judul Video", name: "video_title", widget: "string", required: false }
+              - { label: "Deskripsi Singkat Video", name: "video_desc", widget: "string", required: false }
+
+          # B. LINK PLATFORM NOVEL
+          - label: "LINK PLATFORM BACA (Tersedia Di)"
             name: "novel_links"
             widget: "list"
-            summary: "{{fields.name}}"
             fields:
-              - { label: "Nama Platform", name: "name", widget: "string" }
+              - { label: "Nama Platform", name: "name", widget: "string", default: "Wattpad" }
               - { label: "Link URL", name: "url", widget: "string" }
-              - { label: "Warna Tombol", name: "color", widget: "select", options: ["Orange (Wattpad)", "Merah (Karyakarsa)", "Biru (GoodNovel)", "Hijau (Fizzo)", "Ungu (Umum)"], default: "Ungu (Umum)" }
+              - { label: "Warna Tombol", name: "color", widget: "select", options: ["Orange (Wattpad)", "Merah (Karyakarsa)", "Biru (GoodNovel)", "Hijau (Whatsapp)", "Hitam (Tiktok)", "Ungu (Umum)"] }
 
-          # C. STORE / IKLAN (KANAN SIDEBAR)
-          - label: "🔸 ETALASE STORE & IKLAN (Kanan)"
+          # C. IKLAN / STORE / AFFILIATE (PROFESIONAL)
+          - label: "STORE & AFFILIATE (Kanan Bawah)"
             name: "ads_store"
             widget: "list"
-            summary: "{{fields.product_name}}"
+            summary: "{{product_name}} ({{media_type}})"
             fields:
-              - { label: "Nama Produk/Iklan", name: "product_name", widget: "string" }
-              - { label: "Deskripsi Singkat", name: "description", widget: "text", required: false }
-              - { label: "Gambar Produk (Opsional)", name: "image", widget: "image", required: false }
-              - { label: "Video Youtube (Opsional)", name: "youtube", widget: "string", required: false }
-              - { label: "Teks Tombol", name: "btn_text", widget: "string", default: "Cek Disini" }
-              - { label: "Link Tujuan", name: "url", widget: "string" }
-              - { label: "Warna Tombol", name: "color", widget: "select", options: ["Kuning (Shopee/Promo)", "Hitam (Tiktok/X)", "Pink (IG/Lynk.id)", "Biru (FB/Umum)"], default: "Kuning (Shopee/Promo)" }
+              - { label: "Nama Produk / Iklan", name: "product_name", widget: "string" }
+              - { label: "Deskripsi Promo", name: "description", widget: "string", required: false }
+              - { label: "Tipe Media", name: "media_type", widget: "select", options: ["Gambar Produk", "Video Youtube"], default: "Gambar Produk" }
+              - { label: "Upload Gambar (Jika pilih Gambar)", name: "image", widget: "image", required: false }
+              - { label: "Link Youtube (Jika pilih Video)", name: "youtube", widget: "string", required: false }
+              - { label: "Link Tujuan (Shopee/Tokopedia/Lynk.id)", name: "url", widget: "string" }
+              - { label: "Teks Tombol Beli", name: "btn_text", widget: "string", default: "Cek Promo" }
+              - { label: "Warna Tombol", name: "color", widget: "select", options: ["Orange (Shopee)", "Hijau (Tokopedia)", "Biru (Umum)", "Merah (Diskon)", "Ungu (Digital/Lynk.id)"], default: "Orange (Shopee)" }
 
-          # D. SOSMED & KONTAK
-          - label: "KONTAK & ANALYTICS"
+          # D. SOSIAL MEDIA
+          - label: "KONTAK & SOSMED"
             name: "socials"
             widget: "object"
             fields:
               - { label: "Email Bisnis", name: "email", widget: "string", required: false }
-              - { label: "WhatsApp (Format: 628xxx)", name: "whatsapp", widget: "string", required: false }
-              - { label: "Instagram", name: "instagram", widget: "string", required: false }
-              - { label: "Facebook", name: "facebook", widget: "string", required: false }
-              - { label: "Twitter", name: "twitter", widget: "string", required: false }
-              - { label: "TikTok", name: "tiktok", widget: "string", required: false }
-              - { label: "YouTube Channel", name: "youtube", widget: "string", required: false }
+              - { label: "Nomor WhatsApp (628...)", name: "whatsapp", widget: "string", required: false }
+              - { label: "Link Instagram", name: "instagram", widget: "string", required: false }
+              - { label: "Link Facebook", name: "facebook", widget: "string", required: false }
+              - { label: "Link Twitter/X", name: "twitter", widget: "string", required: false }
+              - { label: "Link TikTok", name: "tiktok", widget: "string", required: false }
+              - { label: "Link YouTube Channel", name: "youtube", widget: "string", required: false }
 
-      - label: "Pengaturan Umum"
-        name: "settings"
+  # 2. PENGATURAN UMUM
+  - name: "general_settings"
+    label: "⚙️ Identitas Website"
+    files:
+      - label: "Identitas Utama"
+        name: "general"
         file: "content/settings/settings_general.json"
         format: "json"
         fields:
-          - { label: "Nama Website", name: "site_title", widget: "string" }
-          - { label: "Deskripsi SEO", name: "meta_description", widget: "text", required: false }
-          - { label: "Google Analytics ID (G-XXXXX)", name: "ga_id", widget: "string", required: false }
-          - { label: "Logo Website", name: "brand_logo", widget: "image", required: false }
-          - { label: "Favicon", name: "brand_favicon", widget: "image", required: false }
+          - { label: "Judul Tab Browser", name: "site_title", widget: "string" }
+          - { label: "Deskripsi SEO", name: "meta_description", widget: "text" }
+          - { label: "Logo/Favicon (Icon T)", name: "brand_favicon", widget: "image", required: false }
+          - { label: "Logo Brand (Header)", name: "brand_logo", widget: "image", required: false }
 
-  # 2. DAFTAR NOVEL
+  # 3. NOVEL (WORKS)
   - name: "works"
-    label: "📚 Daftar Novel"
+    label: "📚 Data Novel"
     files:
       - label: "Database Novel"
         name: "works_list"
@@ -101,42 +101,28 @@ collections:
             widget: "list"
             fields:
               - { label: "Judul Novel", name: "title", widget: "string" }
-              - { label: "Slug URL", name: "slug", widget: "string", hint: "Huruf kecil & strip" }
-              - { label: "Cover Gambar", name: "cover", widget: "image", required: false }
+              - { label: "Slug URL (misal: system-raja)", name: "slug", widget: "string" }
+              - { label: "Cover (Potrait)", name: "cover", widget: "image" }
               - { label: "Genre", name: "genre", widget: "string" }
               - { label: "Status", name: "status", widget: "select", options: ["Ongoing", "Completed", "Hiatus"] }
-              - { label: "Sinopsis", name: "synopsis", widget: "text" }
+              - { label: "Sinopsis", name: "synopsis", widget: "markdown" }
 
-  # 3. MANAJEMEN BAB
+  # 4. BAB NOVEL (CHAPTERS)
   - name: "chapters"
-    label: "📖 Manajemen Bab"
+    label: "📖 Upload Bab Cerita"
     folder: "content/chapters"
     create: true
+    slug: "{{novel_slug}}-{{code}}"
     extension: "json"
     format: "json"
-    slug: "{{novel_slug}}-{{code}}"
     fields:
-      - label: "Slug Novel"
-        name: "novel_slug"
-        widget: "string"
-      - label: "Nomor Bab"
-        name: "code"
-        widget: "string"
-      - label: "Judul Bab"
-        name: "title"
-        widget: "string"
-      - label: "Tanggal Publish"
-        name: "date"
-        widget: "datetime"
-        format: "YYYY-MM-DD"
-      - label: "Tampilkan?"
-        name: "published"
-        widget: "boolean"
-        default: true
-      - label: "Isi Cerita"
-        name: "content"
-        widget: "markdown"
-      - label: "Link Baca Lanjutan"
+      - { label: "Pilih Novel", name: "novel_slug", widget: "relation", collection: "works", file: "works_list", search_fields: ["works.title"], value_field: "works.slug", display_fields: ["works.title"] }
+      - { label: "Nomor Bab (01, 02...)", name: "code", widget: "string" }
+      - { label: "Judul Bab", name: "title", widget: "string" }
+      - { label: "Tanggal Rilis", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Status Publikasi", name: "published", widget: "boolean", default: true }
+      - { label: "Isi Cerita", name: "content", widget: "markdown" }
+      - label: "Link Baca Lanjutan (Monetisasi)"
         name: "external_links"
         widget: "object"
         fields:
@@ -146,7 +132,7 @@ collections:
           - { label: "Link Custom", name: "custom_url", widget: "string", required: false }
           - { label: "Teks Tombol Custom", name: "custom_text", widget: "string", required: false }
 
-  # 4. TULISAN
+  # 5. TULISAN
   - name: "writings"
     label: "✍️ Tulisan & Blog"
     files:
@@ -162,7 +148,6 @@ collections:
               - { label: "Judul", name: "title", widget: "string" }
               - { label: "Slug", name: "slug", widget: "string" }
               - { label: "Kategori", name: "category", widget: "string", required: false }
-              - { label: "Tampilkan di Beranda?", name: "featured", widget: "boolean", default: false }
-              - { label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD", required: false }
-
-              - { label: "Isi Tulisan", name: "content", widget: "markdown", required: false }
+              - { label: "Tanggal", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+              - { label: "Featured (Tampil di Home)", name: "featured", widget: "boolean", default: false }
+              - { label: "Isi Konten", name: "content", widget: "markdown" }

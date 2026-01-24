@@ -3,34 +3,51 @@
     "title": "Titik Fiksi Universe",
     "subtitle": "Tempat Imajinasi Menjadi Nyata",
     "intro": "Selamat datang di website resmi Titik Fiksi.",
-    "youtube_embed": "https://www.youtube.com/watch?v=LXb3EKWsInQ"
-  },
-  "platforms": {
-    "wattpad": "https://wattpad.com",
-    "karyakarsa": "https://karyakarsa.com"
-  },
-  "socials": {
-    "instagram": "https://www.instagram.com/titikfiksi.official",
-    "facebook": "https://www.facebook.com/titikfiksi",
-    "twitter": "https://twitter.com/titikfiksi",
-    "tiktok": "https://www.tiktok.com/@titikfiksi.official",
-    "youtube": "https://youtube.com/@titikfiksi",
-    "email": "titikfiksi@gmail.com"
+    "youtube_embed": "https://www.youtube.com/watch?v=LXb3EKWsInQ",
+    "video_title": "Trailer Resmi",
+    "video_desc": "Tonton cuplikan visualisasi dunia System Raja Keberuntungan.",
+    "video_link": "",
+    "video_btn_text": ""
   },
   "novel_links": [
     {
-      "color": "Orange (Wattpad)",
-      "url": "https://www.wattpad.com/",
-      "name": "wattpad"
+      "name": "Wattpad",
+      "url": "https://wattpad.com",
+      "color": "Orange (Wattpad)"
+    },
+    {
+      "name": "Karyakarsa",
+      "url": "https://karyakarsa.com",
+      "color": "Merah (Karyakarsa)"
     }
   ],
   "ads_store": [
     {
-      "btn_text": "Cek Disini",
-      "color": "Kuning (Shopee/Promo)",
-      "url": "https://shopee.co.id/BANGO-KECAP-MANIS-700G-x6-i.14318452.26764862187?extraParams=%7B%22display_model_id%22%3A226912104364%7D",
-      "product_name": "BANGO KECAP MANIS 700G x6",
-      "description": "� Kecap Manis \n\n� 100% Kecap Cuma Bango \n\n� Terbuat dari 100% bahan alami yang berkualitas \n\n� Tanpa pengawet, tanpa pewarna sintetik, tanpa pemanis buatan, tanpa penguat rasa \n\n� Bumbu memasak yang mudah digunakan dan multifungsi \n\n� Dapat digunakan untuk berbagai sajian masakan "
+      "product_name": "Akses E-Book Premium",
+      "description": "Download koleksi E-Book dan Preset eksklusif via Lynk.id",
+      "media_type": "Gambar Produk",
+      "image": "assets/images/defaults/cover-default.jpg",
+      "url": "https://lynk.id/titikfiksi",
+      "btn_text": "Akses Digital",
+      "color": "Ungu (Digital/Lynk.id)"
+    },
+    {
+      "product_name": "Review Setup Penulis",
+      "description": "Alat tempur menulis novel fantasi.",
+      "media_type": "Video Youtube",
+      "youtube": "https://www.youtube.com/watch?v=LXb3EKWsInQ",
+      "url": "https://tokopedia.com",
+      "btn_text": "Cek Produk",
+      "color": "Hijau (Tokopedia)"
     }
-  ]
+  ],
+  "socials": {
+    "email": "admin@titikfiksi.com",
+    "whatsapp": "628123456789",
+    "instagram": "https://instagram.com/titikfiksi",
+    "facebook": "https://facebook.com/titikfiksi",
+    "twitter": "https://twitter.com/titikfiksi",
+    "tiktok": "https://tiktok.com/@titikfiksi",
+    "youtube": "https://youtube.com/@titikfiksi"
+  }
 }

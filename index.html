@@ -57,7 +57,7 @@
              <div class="promo-text">
                 <div id="hero-video-title" class="promo-title"></div>
                 <p id="hero-video-desc" class="promo-desc"></p>
-                <a id="hero-video-link" href="#" target="_blank" class="btn btn-soft" style="font-size:12px; padding:6px 12px;">Tonton Video</a>
+                <a id="hero-video-link" href="#" target="_blank" class="btn btn-soft" style="display:none;">Tonton</a>
              </div>
           </div>
           
@@ -107,9 +107,7 @@
     if (window.netlifyIdentity) {
       window.netlifyIdentity.on("init", user => {
         if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
+          window.netlifyIdentity.on("login", () => { document.location.href = "/admin/"; });
         }
       });
     }

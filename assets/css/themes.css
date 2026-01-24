@@ -1,9 +1,9 @@
 /* =========================================================
-   TITIK FIKSI — Color Themes (Professional Palette)
+   TITIK FIKSI — Color Themes
    File: assets/css/themes.css
    ========================================================= */
 
-/* --- PEARL SKY (Default - Clean Professional) --- */
+/* --- PEARL SKY (Default) --- */
 :root[data-theme="pearl"] {
   --bg-1: #f3f6fc;
   --bg-2: #ffffff;
@@ -19,28 +19,24 @@
   --cta-bg: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(37,99,235,0.1));
 }
 
-/* --- AURORA MINT (FIX: DEEP OCEAN TEAL CONTRAST) --- */
+/* --- AURORA MINT (FIXED TEXT CONTRAST) --- */
 :root[data-theme="aurora"] {
-  --bg-1: #f0fdfa; /* Mint Ice */
-  --bg-2: #ccfbf1; /* Soft Cyan */
+  --bg-1: #f0fdfa; 
+  --bg-2: #ccfbf1; 
   --bg-3: #ffffff;
-  
-  /* FIX: Text dibuat jauh lebih gelap (Deep Ocean) untuk kontras maksimal */
-  --text-1: #0f393b; /* Hampir hitam, tapi nuansa hijau laut dalam */
-  --text-2: #1e5255; /* Teal gelap */
-  --muted: #4b8886;  /* Teal pudar yang masih terbaca */
-  
-  --border: rgba(19, 78, 74, 0.15); /* Border lebih tegas */
+  /* Fixed: Text jauh lebih gelap */
+  --text-1: #0f393b; 
+  --text-2: #1e5255; 
+  --muted: #4b8886;  
+  --border: rgba(19, 78, 74, 0.15); 
   --glass: rgba(255, 255, 255, 0.65);
   --glass-strong: rgba(245, 255, 254, 0.9);
-  
-  /* Brand tetap segar tapi tidak neon menyakitkan */
   --brand: #0d9488; 
   --brand-gradient: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
   --cta-bg: linear-gradient(135deg, rgba(13,148,136,0.08), rgba(20,184,166,0.15));
 }
 
-/* --- DEEP SPACE (OLED Dark Mode) --- */
+/* --- DEEP SPACE (Dark Mode) --- */
 :root[data-theme="dark"] {
   --bg-1: #020617;
   --bg-2: #0f172a;
