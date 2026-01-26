@@ -1,0 +1,102 @@
+# ==========================================
+# KONFIGURASI CLOUDCANNON (TITIK FIKSI)
+# Engine: CloudCannon | Database: JSON
+# ==========================================
+
+timezone: Asia/Jakarta
+
+# 1. VISUAL EDITOR SETTINGS
+_inputs:
+  date:
+    type: date
+    instance_value: now
+    options:
+      format: "yyyy-MM-dd"
+  image:
+    type: file
+    options:
+      accept: ["image/*"]
+      mime_type: image/*
+  markdown:
+    type: markdown
+    options:
+      bold: true
+      italic: true
+      link: true
+      bulleted_list: true
+      numbered_list: true
+      undo: true
+      redo: true
+      height: "400px"
+
+# 2. DATA UTAMA (Novel & Tulisan)
+# CloudCannon akan membaca file JSON array Anda sebagai list yang bisa diedit
+data_config:
+  works:
+    path: "content/works/works.json"
+    format: "json"
+    _inputs:
+      works:
+        type: array
+        options:
+          structures:
+            _values:
+              title: ""
+              slug: ""
+              genre: "Fantasi"
+              status: "Ongoing"
+              synopsis: ""
+              cover: "/assets/images/defaults/cover-default.jpg"
+
+  writings:
+    path: "content/writings/writings.json"
+    format: "json"
+    _inputs:
+      writings:
+        type: array
+        options:
+          structures:
+            _values:
+              title: "Judul Tulisan Baru"
+              slug: "slug-tulisan-baru"
+              date: "now"
+              category: "Blog"
+              content: "Tulis isi artikel di sini..."
+              featured: false
+
+  home:
+    path: "content/home/home.json"
+    format: "json"
+  
+  settings:
+    path: "content/settings/settings_general.json"
+    format: "json"
+
+# 3. KOLEKSI BAB NOVEL (File Terpisah)
+collections_config:
+  chapters:
+    name: "📖 Bab Cerita"
+    path: "content/chapters"
+    parser: "json"
+    output: false
+    # Format nama file otomatis: slugnovel-nomor.json
+    create:
+      path: "content/chapters/{work_slug}-{code}.json"
+      fields:
+        - work_slug
+        - code
+    sort:
+      key: "date"
+      order: "desc"
+    # Tampilan Form saat Add New Chapter
+    schemas:
+      default:
+        name: "Bab Baru"
+        fields:
+          - { key: "work_slug", label: "Slug Novel (Wajib Sama dengan Data Novel)", type: "text", comment: "Contoh: system-raja-keberuntungan" }
+          - { key: "code", label: "Nomor Bab (01, 02...)", type: "text" }
+          - { key: "title", label: "Judul Bab", type: "text" }
+          - { key: "date", label: "Tanggal Rilis", type: "date" }
+          - { key: "published", label: "Publikasikan?", type: "checkbox", default: true }
+          - { key: "content", label: "ISI CERITA (Tulis Disini)", type: "markdown" }
+          - { key: "external_links", label: "Link Berbayar (Opsional)", type: "object" }

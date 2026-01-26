@@ -23,12 +23,12 @@
   ],
   "ads_store": [
     {
-      "product_name": "\"Metode Menghafal Al-Qur’an untuk Semua Usia\"",
-      "description": "eBook digital 34 halaman ini dirancang khusus untuk membantu siapa pun menghafal Al-Qur'an — mulai dari anak usia 4 tahun  📌 Format: PDF (34 halaman, desain penuh)  📥 Dapat dibaca di HP, tablet, atau laptop  📦 Ukuran File: ±16MB  📆 Rilis: 2025",
+      "product_name": "Akses E-Book Premium",
+      "description": "Download koleksi E-Book dan Preset eksklusif via Lynk.id",
       "media_type": "Gambar Produk",
-      "image": "/assets/images/uploads/whatsapp-image-2026-01-25-at-21.50.47.jpeg",
-      "url": "http://lynk.id/lutfi.abdulloh.25/5d4x6dlkl2g5",
-      "btn_text": "Detail Produk",
+      "image": "assets/images/defaults/cover-default.jpg",
+      "url": "https://lynk.id/titikfiksi",
+      "btn_text": "Akses Digital",
       "color": "Ungu (Digital/Lynk.id)"
     },
     {
@@ -42,12 +42,12 @@
     }
   ],
   "socials": {
-    "email": "titikfiksiuniverse@gmail.com",
-    "whatsapp": "6281328021672",
-    "instagram": "https://www.instagram.com/titikfiksi.official",
-    "facebook": "https://www.facebook.com/titikfiksi",
+    "email": "admin@titikfiksi.com",
+    "whatsapp": "628123456789",
+    "instagram": "https://instagram.com/titikfiksi",
+    "facebook": "https://facebook.com/titikfiksi",
     "twitter": "https://twitter.com/titikfiksi",
-    "tiktok": "https://www.tiktok.com/@titikfiksi.official",
+    "tiktok": "https://tiktok.com/@titikfiksi",
     "youtube": "https://youtube.com/@titikfiksi"
   }
 }

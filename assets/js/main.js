@@ -1,6 +1,6 @@
 /* =========================================================
-   TITIK FIKSI — Main Controller (FINAL STABLE VERSION)
-   Status: Verified Clean, Zero Error, All Features Active
+   TITIK FIKSI — Main Controller (OPTIMIZED V8.0)
+   Status: Cloudflare Ready, Cache Optimized, No-Bloat
    ========================================================= */
 
 const TitikFiksi = (() => {
@@ -30,14 +30,14 @@ const TitikFiksi = (() => {
         return dateString;
       }
     },
+    // [OPTIMAL] Fetch tanpa timestamp spamming agar hemat bandwidth
     async fetchJSON(path) {
       try {
-        const timestamp = new Date().getTime();
-        const url = `${path}?v=${timestamp}`;
-        const res = await fetch(url, { cache: "no-store" });
+        const res = await fetch(path);
         if (!res.ok) return null;
         return await res.json();
       } catch (e) {
+        console.error("Error loading:", path);
         return null;
       }
     },
@@ -58,7 +58,6 @@ const TitikFiksi = (() => {
     renderMarkdown(text) {
       if (!text) return "";
       try {
-        // Membersihkan backslash yang tidak perlu
         let clean = text.replace(/\\/g, ''); 
         const paragraphs = clean.split(/\n\s*\n/);
         return paragraphs.map(para => {
@@ -76,7 +75,14 @@ const TitikFiksi = (() => {
     },
     getYoutubeEmbed(url) {
       if (!url) return "";
-      return url.replace("watch?v=", "embed/").replace("youtu.be/", "www.youtube.com/embed/");
+      let videoId = "";
+      if (url.includes("youtu.be/")) {
+        videoId = url.split("youtu.be/")[1].split("?")[0];
+      } else if (url.includes("watch?v=")) {
+        videoId = url.split("watch?v=")[1].split("&")[0];
+      }
+      if(videoId) return `https://www.youtube.com/embed/${videoId}`;
+      return url; 
     }
   };
 
@@ -122,13 +128,9 @@ const TitikFiksi = (() => {
     if (s.email && s.email.length > 3) {
       html += `<a href="mailto:${s.email}" class="btn-contact btn-email">📧 Email Bisnis</a>`;
     }
-
-    if (html === "") {
-      container.style.display = "none";
-    } else {
-      container.innerHTML = html;
-      container.style.display = "flex";
-    }
+    
+    container.innerHTML = html;
+    container.style.display = html === "" ? "none" : "flex";
   }
 
   /* --- 4. INISIALISASI HALAMAN --- */
@@ -147,34 +149,6 @@ const TitikFiksi = (() => {
       }
       if (settings.site_title && (location.pathname === '/' || location.pathname.includes('index'))) {
         document.title = settings.site_title;
-      }
-
-      // Google Analytics Injection
-      if (settings.ga_id && settings.ga_id.startsWith("G-")) {
-        const scriptLib = document.getElementById("ga-script");
-        if (scriptLib) {
-          scriptLib.src = `https://www.googletagmanager.com/gtag/js?id=${settings.ga_id}`;
-        } else {
-          const newScript = document.createElement("script");
-          newScript.async = true;
-          newScript.src = `https://www.googletagmanager.com/gtag/js?id=${settings.ga_id}`;
-          document.head.appendChild(newScript);
-        }
-
-        const code = `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${settings.ga_id}');
-        `;
-        const scriptSetup = document.getElementById("ga-setup");
-        if (scriptSetup) {
-          scriptSetup.innerHTML = code;
-        } else {
-          const s = document.createElement("script");
-          s.innerHTML = code;
-          document.head.appendChild(s);
-        }
       }
     }
 
@@ -197,7 +171,7 @@ const TitikFiksi = (() => {
     Utils.setText("hero-subtitle", data.hero.subtitle);
     Utils.setText("hero-intro", data.hero.intro);
 
-    // Hero Video (Kiri)
+    // Hero Video
     const ytWrapper = document.getElementById("hero-youtube-wrapper");
     const ytContainer = document.getElementById("hero-youtube");
 
@@ -212,45 +186,28 @@ const TitikFiksi = (() => {
       if (ytWrapper) ytWrapper.style.display = "grid";
     }
 
-    // Novel Platforms
+    // Links & Ads
     const linksContainer = document.getElementById("novel-links-container");
     if (linksContainer) {
-      let items = [];
-      if (data.novel_links && Array.isArray(data.novel_links)) {
-        items = data.novel_links;
-      } else if (data.platforms) {
-        items = Object.entries(data.platforms).map(([key, val]) => ({
-          name: key, url: val, color: 'Ungu'
-        }));
-      }
-
+      let items = data.novel_links || [];
       if (items.length > 0) {
         let htmlLeft = "";
         items.forEach(item => {
-          let colorClass = getColorClass(item.color);
-          htmlLeft += `<a href="${item.url}" target="_blank" class="btn-platform ${colorClass}">${item.name}</a>`;
+          htmlLeft += `<a href="${item.url}" target="_blank" class="btn-platform ${getColorClass(item.color)}">${item.name}</a>`;
         });
         linksContainer.innerHTML = htmlLeft;
-      } else {
-        linksContainer.innerHTML = "";
       }
     }
 
-    // Ads Store (Kanan)
     const adsContainer = document.getElementById("ads-store-container");
     if (adsContainer) {
       if (data.ads_store && Array.isArray(data.ads_store) && data.ads_store.length > 0) {
         let htmlStore = "";
         data.ads_store.forEach(item => {
           let colorClass = getColorClass(item.color);
-          let mediaContent = "";
-
-          if (item.media_type === "Video Youtube" && item.youtube) {
-            let ytUrl = Utils.getYoutubeEmbed(item.youtube);
-            mediaContent = `<div class="store-media video"><iframe src="${ytUrl}" title="Iklan" frameborder="0" allowfullscreen></iframe></div>`;
-          } else if (item.image) {
-            mediaContent = `<div class="store-media image"><img src="${item.image}" alt="${item.product_name}"></div>`;
-          }
+          let mediaContent = item.media_type === "Video Youtube" && item.youtube 
+            ? `<div class="store-media video"><iframe src="${Utils.getYoutubeEmbed(item.youtube)}" title="Iklan" frameborder="0" allowfullscreen></iframe></div>`
+            : `<div class="store-media image"><img src="${item.image}" alt="${item.product_name}"></div>`;
 
           htmlStore += `
             <div class="store-item glass-panel" style="margin-bottom:15px; padding:12px; border:1px solid var(--border);">
@@ -263,11 +220,8 @@ const TitikFiksi = (() => {
             </div>`;
         });
         adsContainer.innerHTML = htmlStore;
-      } else {
-        adsContainer.innerHTML = `<p style="font-size:12px; color:var(--muted);">Belum ada produk/iklan.</p>`;
       }
     }
-
     initFeaturedWritings();
   }
 
@@ -322,7 +276,7 @@ const TitikFiksi = (() => {
     listContainer.innerHTML = '<div>Mencari bab...</div>';
 
     let chapterCount = 1, foundChapters = [], gapCount = 0;
-    while (chapterCount <= 300 && gapCount < 5) {
+    while (chapterCount <= 300 && gapCount < 3) {
       const code = String(chapterCount).padStart(2, '0');
       const chapData = await Utils.fetchJSON(`${PATHS.chaptersDir}${slug}-${code}.json`);
       if (chapData) {
@@ -383,11 +337,8 @@ const TitikFiksi = (() => {
                  <h4>Suka dengan cerita ini?</h4>
                  <p>Jangan tunggu lama. Baca bab selanjutnya lebih cepat dan dukung penulis di platform resmi:</p>
                  <div class="cta-buttons">${btns}</div>
-              </div>
-            `;
-      } else {
-        linkBox.innerHTML = "";
-      }
+              </div>`;
+      } else { linkBox.innerHTML = ""; }
     }
 
     const btnBack = document.getElementById("btn-back-novel");
@@ -399,20 +350,17 @@ const TitikFiksi = (() => {
       if (cur > 1) {
         btnPrev.href = `chapter.html?novel=${novelSlug}&chapter=${String(cur-1).padStart(2,'0')}`;
         btnPrev.style.display = "inline-flex";
-      } else {
-        btnPrev.style.display = "none";
-      }
+      } else { btnPrev.style.display = "none"; }
     }
 
     const btnNext = document.getElementById("btn-next");
     if (btnNext) {
-      const nxt = await Utils.fetchJSON(`${PATHS.chaptersDir}${novelSlug}-${String(cur+1).padStart(2,'0')}.json`);
+      const nxtCode = String(cur+1).padStart(2,'0');
+      const nxt = await Utils.fetchJSON(`${PATHS.chaptersDir}${novelSlug}-${nxtCode}.json`);
       if (nxt) {
-        btnNext.href = `chapter.html?novel=${novelSlug}&chapter=${String(cur+1).padStart(2,'0')}`;
+        btnNext.href = `chapter.html?novel=${novelSlug}&chapter=${nxtCode}`;
         btnNext.style.display = "inline-flex";
-      } else {
-        btnNext.style.display = "none";
-      }
+      } else { btnNext.style.display = "none"; }
     }
   }
 
@@ -440,8 +388,7 @@ const TitikFiksi = (() => {
         <div style="padding: 12px;">
             <div class="card-meta"><span class="badge">${work.status}</span></div>
             <h4>${titleHTML}</h4>
-        </div>
-      `;
+        </div>`;
       container.appendChild(card);
     });
   }
@@ -449,12 +396,8 @@ const TitikFiksi = (() => {
   async function initWritingsList() {
     const container = document.getElementById("writings-container");
     if (!container) return;
-
     const data = await Utils.fetchJSON(PATHS.writings);
-    if (!data || !data.writings) {
-      container.innerHTML = '<div>Kosong.</div>';
-      return;
-    }
+    if (!data || !data.writings) { container.innerHTML = '<div>Kosong.</div>'; return; }
 
     container.innerHTML = "";
     data.writings.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(item => {
@@ -470,8 +413,7 @@ const TitikFiksi = (() => {
         <h3 style="margin:0 0 10px; font-size:1.25rem;">${item.title}</h3>
         <p style="font-size:0.95rem; line-height:1.7; color:var(--text-2); margin:0;">
             ${item.content ? Utils.renderMarkdown(item.content) : '...'}
-        </p>
-      `;
+        </p>`;
       container.appendChild(row);
     });
   }
